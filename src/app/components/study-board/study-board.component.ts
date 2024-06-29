@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MAX_TIMES_TABLE_AVAILABLE } from '../../constants/config';
-import { TimesTableComponent } from '../times-table/times-table.component';
+import { TimesTableComponent } from './times-table/times-table.component';
 
 @Component({
   selector: 'app-study-board',
