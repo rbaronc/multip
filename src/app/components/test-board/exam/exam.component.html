@@ -1,1 +1,30 @@
-<p>exam works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card" *ngIf="questions.length && !displayResults">
+                <div class="card-body">
+                  <h5 class="card-title">Responde la siguiente pregunta:</h5>
+                  <p class="card-text">{{questions.length? questions[currentQuestionIndex].text: ""}}</p>                  
+                  <input type="number" name="" id="" [(ngModel)]="givenAnswer">
+
+                  <br>
+                  <br>
+                  <a href="#" class="btn btn-success" (click)="showNextQuestion()" *ngIf="nextAvailable && !displayResults">Siguiente</a>
+                  <a href="#" class="btn btn-warning" (click)="calculateResults()" *ngIf="!nextAvailable && !displayResults">Ver Resultados</a>
+                </div>
+            </div>
+
+            <div class="card" *ngIf="displayResults">
+                <div class="card-body">
+                  <h5 class="card-title">¡Estos son tus resultados!:</h5>
+                
+                  <p class="card-text" *ngFor="let question of questions">{{getQuestionResultText(question)}}</p>
+
+                  <a href="#" class="btn btn-success">Salir</a>
+                </div>
+            </div>
+
+            <p *ngIf="questions.length === 0"> No questions so far</p>
+        </div>
+    </div>
+</div>

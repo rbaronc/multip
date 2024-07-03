@@ -39,6 +39,6 @@
 </div>
 
 <div class="container" [ngClass]="examHasBegun? 'show': 'hide'">
-    <app-exam></app-exam>
+    <app-exam [tables]="selectedTables"></app-exam>
 </div>
 
