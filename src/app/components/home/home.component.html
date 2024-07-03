@@ -1,0 +1,26 @@
+<div class="container text-center">
+    <h3>¡Bienvenido!</h3>
+    <h4>¿Qué quieres hacer?</h4>
+
+    <br/>
+    <br/>
+
+    <div class="row home">
+      <div class="col-6">
+        <button type="button" (click)="currentBoard = 'StudyBoard'"  class="btn btn-primary">Repasar</button>
+      </div>
+      <div class="col-6">
+        <button type="button" (click)="currentBoard = 'TestBoard'" class="btn btn-warning">¡Ponte a Prueba!</button>
+    </div>
+    
+    <br>
+
+    <div class="row">
+        <div class="col-12" [ngClass]="currentBoard == 'StudyBoard'? 'show': 'hide'">
+            <app-study-board></app-study-board>
+        </div>
+        <div class="col-12" [ngClass]="currentBoard == 'TestBoard'? 'show': 'hide'">
+          <app-test-board></app-test-board>
+        </div>
+    </div>
+  </div>

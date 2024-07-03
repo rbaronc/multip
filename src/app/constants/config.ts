@@ -1,0 +1,1 @@
+export const MAX_TIMES_TABLE_AVAILABLE = 10;
