@@ -1,14 +1,16 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { MAX_TIMES_TABLE_AVAILABLE } from '../../../constants/config';
 import { Question } from '../../../types/question.type';
 
+import { QuestionComponent } from '../question/question.component';
+
 @Component({
   selector: 'app-exam',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, QuestionComponent],
   templateUrl: './exam.component.html',
   styleUrl: './exam.component.scss'
 })
@@ -16,7 +18,7 @@ export class ExamComponent implements OnChanges{
   @Input() tables: number[] = [];
   questions:Question[] = [];
   currentQuestionIndex = 0;
-  givenAnswer = null;  
+  givenAnswer: number | null = null;  
   nextAvailable = false;
   displayResults = false;
 
@@ -29,22 +31,20 @@ export class ExamComponent implements OnChanges{
     }
   }
 
-  showNextQuestion() {
-    this.evaluateAnswer();    
-    this.currentQuestionIndex++;
-    this.nextAvailable = this.currentQuestionIndex < this.questions.length - 1;
-    this.givenAnswer = null;
-  }
-
-  calculateResults() {
-    this.evaluateAnswer();
-    this.givenAnswer = null;
-    this.nextAvailable = false;
-    this.displayResults = true;
-  }
-
   getQuestionResultText(question: Question): string {
     return `${question.multiplicand}X${question.multiplier} = ${question.givenAnswer}: ${question.result? 'Correcto': 'Incorrecto'}`;
+  }
+
+  handleShowNextQuestion(givenAnswer:number) {
+    this.evaluateAnswer(givenAnswer);
+    this.currentQuestionIndex++;
+    this.nextAvailable = this.currentQuestionIndex < this.questions.length - 1;
+  }
+
+  handleCalculateResults(givenAnswer:number) {
+    this.evaluateAnswer(givenAnswer);
+    this.nextAvailable = false;
+    this.displayResults = true;
   }
 
   private fillQuestions() {
@@ -76,10 +76,10 @@ export class ExamComponent implements OnChanges{
     return Math.floor(Math.random() * max);
   }
 
-  private evaluateAnswer() {
+  private evaluateAnswer(givenAnswer: number) {
     if(this.currentQuestionIndex < this.questions.length) {
-      this.questions[this.currentQuestionIndex].givenAnswer = this.givenAnswer;
-      this.questions[this.currentQuestionIndex].result = this.questions[this.currentQuestionIndex].rightAnswer == this.givenAnswer;
+      this.questions[this.currentQuestionIndex].givenAnswer = givenAnswer;
+      this.questions[this.currentQuestionIndex].result = this.questions[this.currentQuestionIndex].rightAnswer == givenAnswer;
     }
   }
 }

@@ -1,0 +1,12 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Responde la siguiente pregunta:</h5>
+        <p class="card-text">{{totalQuestions? question.text: ""}}</p>                  
+        <input type="number" name="" id="" [(ngModel)]="givenAnswer">
+    
+        <br>
+        <br>
+        <button href="#" class="btn btn-success" (click)="showNextQuestion()" [disabled]="!givenAnswer" *ngIf="nextAvailable && !displayResults">Siguiente</button>
+        <button href="#" class="btn btn-warning" (click)="calculateResults()" *ngIf="!nextAvailable && !displayResults">Ver Resultados</button>
+    </div>
+</div>
