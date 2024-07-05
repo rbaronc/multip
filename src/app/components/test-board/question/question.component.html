@@ -6,7 +6,16 @@
     
         <br>
         <br>
-        <button href="#" class="btn btn-success" (click)="showNextQuestion()" [disabled]="!givenAnswer" *ngIf="nextAvailable && !displayResults">Siguiente</button>
-        <button href="#" class="btn btn-warning" (click)="calculateResults()" *ngIf="!nextAvailable && !displayResults">Ver Resultados</button>
+        <div class="row">
+            <div class="col-4">
+                <button href="#" class="btn btn-success" (click)="showNextQuestion()" [disabled]="!givenAnswer" *ngIf="nextAvailable && !displayResults">Siguiente</button>
+            </div>
+            <div class="col-4">
+                <button href="#" class="btn btn-warning" (click)="calculateResults()" *ngIf="!nextAvailable && !displayResults">Ver Resultados</button>
+            </div>
+            <div class="col-4">
+                <app-timer [resetCount]="timerResetCount" (onTimeUp)="handleTimeUp()"></app-timer>
+            </div>
+        </div>
     </div>
 </div>

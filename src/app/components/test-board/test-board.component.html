@@ -38,7 +38,10 @@
     </div>
 </div>
 
-<div class="container" [ngClass]="examHasBegun? 'show': 'hide'">
-    <app-exam [tables]="selectedTables"></app-exam>
-</div>
+<ng-container *ngIf="examHasBegun">
+    <div class="container">
+        <app-exam [tables]="selectedTables"></app-exam>
+    </div>
+</ng-container>
+
 

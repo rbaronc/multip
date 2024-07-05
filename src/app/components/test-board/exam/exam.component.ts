@@ -32,16 +32,16 @@ export class ExamComponent implements OnChanges{
   }
 
   getQuestionResultText(question: Question): string {
-    return `${question.multiplicand}X${question.multiplier} = ${question.givenAnswer}: ${question.result? 'Correcto': 'Incorrecto'}`;
+    return `${question.multiplicand}X${question.multiplier} = ${question.givenAnswer === null? 'Sin respuesta': question.givenAnswer }: ${question.result? 'Correcto': 'Incorrecto'}`;
   }
 
-  handleShowNextQuestion(givenAnswer:number) {
+  handleShowNextQuestion(givenAnswer:number | null) {
     this.evaluateAnswer(givenAnswer);
     this.currentQuestionIndex++;
     this.nextAvailable = this.currentQuestionIndex < this.questions.length - 1;
   }
 
-  handleCalculateResults(givenAnswer:number) {
+  handleCalculateResults(givenAnswer:number | null) {
     this.evaluateAnswer(givenAnswer);
     this.nextAvailable = false;
     this.displayResults = true;
@@ -76,7 +76,7 @@ export class ExamComponent implements OnChanges{
     return Math.floor(Math.random() * max);
   }
 
-  private evaluateAnswer(givenAnswer: number) {
+  private evaluateAnswer(givenAnswer: number | null) {
     if(this.currentQuestionIndex < this.questions.length) {
       this.questions[this.currentQuestionIndex].givenAnswer = givenAnswer;
       this.questions[this.currentQuestionIndex].result = this.questions[this.currentQuestionIndex].rightAnswer == givenAnswer;
