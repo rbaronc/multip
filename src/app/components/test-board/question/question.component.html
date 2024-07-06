@@ -2,7 +2,7 @@
     <div class="card-body">
         <h5 class="card-title">Responde la siguiente pregunta:</h5>
         <p class="card-text">{{totalQuestions? question.text: ""}}</p>                  
-        <input type="number" name="" id="" [(ngModel)]="givenAnswer">
+        <input type="number" #givenAnswerInput [(ngModel)]="givenAnswer">
     
         <br>
         <br>

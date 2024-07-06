@@ -1,3 +1,3 @@
 export const MAX_TIMES_TABLE_AVAILABLE = 10;
-export const QUESTION_TIMER_SECONDS = 7;
-export const QUESTION_TIMER_INIT_MS = 8000;
+export const QUESTION_TIMER_SECONDS = 10;
+export const QUESTION_TIMER_INIT_MS = 11000;

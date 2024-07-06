@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, output } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -12,7 +12,7 @@ import { Question } from '../../../types/question.type';
   templateUrl: './question.component.html',
   styleUrl: './question.component.scss'
 })
-export class QuestionComponent {
+export class QuestionComponent{
   givenAnswer: number | null = null;
   timerResetCount: number = 0;
 
@@ -30,6 +30,23 @@ export class QuestionComponent {
   
   onCalculateResults = output<number | null>();
   onShowNextQuestion = output<number| null>();
+
+  @ViewChild('givenAnswerInput') givenAnswerInput!: ElementRef;
+
+  @HostListener('window:keypress', ['$event'])
+  handleKeyPress(event: KeyboardEvent) {
+    if(event.code === "Enter" || event.code === "NumpadEnter") {
+      if(!this.nextAvailable && !this.displayResults) {
+        this.calculateResults();
+      } else {
+        this.showNextQuestion();
+      }
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.givenAnswerInput.nativeElement.focus();
+  }
 
   showNextQuestion() {
     this.onShowNextQuestion.emit(this.givenAnswer);
