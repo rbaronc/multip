@@ -16,11 +16,16 @@
     <br>
 
     <div class="row">
-        <div class="col-12" [ngClass]="currentBoard == 'StudyBoard'? 'show': 'hide'">
-            <app-study-board></app-study-board>
+      <ng-container *ngIf="currentBoard == 'StudyBoard'">
+        <div class="col-12">
+          <app-study-board></app-study-board>
         </div>
-        <div class="col-12" [ngClass]="currentBoard == 'TestBoard'? 'show': 'hide'">
+      </ng-container>
+      
+      <ng-container *ngIf="currentBoard == 'TestBoard'">
+        <div class="col-12">
           <app-test-board></app-test-board>
         </div>
+      </ng-container>
     </div>
   </div>
