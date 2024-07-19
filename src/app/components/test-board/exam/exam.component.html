@@ -16,8 +16,18 @@
                   <h5 class="card-title">¡Estos son tus resultados!:</h5>
                 
                   <p class="card-text" *ngFor="let question of questions">{{getQuestionResultText(question)}}</p>
-
-                  <a href="#" class="btn btn-success">Salir</a>
+                
+                  <div class="row">
+                    <div class="col-4">
+                        <a href="#" class="btn btn-success" (click)="retryTest()">Intentar de nuevo</a>
+                    </div>
+                    <div class="col-4">
+                        <a href="#" class="btn btn-primary" (click)="takeAnotherTest()">Seleccionar otras tablas</a>
+                    </div>
+                    <div class="col-4">
+                        <a href="#" class="btn btn-danger" (click)="quitExam()">Salir</a>
+                    </div>
+                  </div>
                 </div>
             </div>
 

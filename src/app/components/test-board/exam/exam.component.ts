@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -21,13 +21,16 @@ export class ExamComponent implements OnChanges{
   givenAnswer: number | null = null;  
   nextAvailable = false;
   displayResults = false;
+  
+  onQuitExam = output<void>();
+  onChangeTimesTables = output<void>();
 
   ngOnChanges(changes: SimpleChanges): void {
     const tables = changes['tables'];    
 
     if(tables && tables.currentValue) {
       this.nextAvailable =  true;
-      this.fillQuestions();
+      this.shuffleQuestionsArray();
     }
   }
 
@@ -47,9 +50,24 @@ export class ExamComponent implements OnChanges{
     this.displayResults = true;
   }
 
-  private fillQuestions() {
+  quitExam() {
+    this.onQuitExam.emit();
+  }
+
+  retryTest() {
+    this.shuffleQuestionsArray();
+    this.displayResults = false;
+    this.currentQuestionIndex = 0;
+    this.nextAvailable = true;
+  }
+
+  takeAnotherTest() {
+    this.onChangeTimesTables.emit();
+  }
+
+  private shuffleQuestionsArray() {
     this.questions = Array(this.tables.length * MAX_TIMES_TABLE_AVAILABLE);
-    const availableNumbers = Array.from(this.questions.keys());    
+    const availableNumbers = Array.from(this.questions.keys());
 
     for(let i = 0; i < this.tables.length; i++) {
       const multiplicand = this.tables[i];

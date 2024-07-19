@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MAX_TIMES_TABLE_AVAILABLE } from '../../constants/config';
@@ -18,6 +18,7 @@ export class TestBoardComponent {
   anyTableSelected = false;
   selectedTables: number[] = [];
   examHasBegun = false;
+  onTestFinished = output<void>();
 
   constructor() {
     this.timesTables = Array.from(Array(MAX_TIMES_TABLE_AVAILABLE).keys())
@@ -47,5 +48,16 @@ export class TestBoardComponent {
   public checkSelectedTables() {    
     this.selectedTables = this.timesTables.filter(table => table.selected).map(table => table.timesTable);
     this.anyTableSelected = !!this.selectedTables.length;    
+  }
+
+  public handleQuitExam() {
+    this.onTestFinished.emit();
+  }
+
+  public handleChangeTimesTables() {
+    this.timesTables.forEach(table => table.selected = false);
+    this.selectedTables = [];
+    this.anyTableSelected = false;
+    this.examHasBegun = false;
   }
 }

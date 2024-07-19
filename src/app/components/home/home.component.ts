@@ -13,4 +13,8 @@ import { TestBoardComponent } from '../test-board/test-board.component';
 })
 export class HomeComponent {
   currentBoard = 'None';
+
+  handleTestFinished() {
+    this.currentBoard = 'None';
+  }
 }

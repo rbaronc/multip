@@ -1,4 +1,4 @@
-<div class="container text-center">
+<div class="container text-center home-page">
     <h3>¡Bienvenido!</h3>
     <h4>¿Qué quieres hacer?</h4>
 
@@ -16,6 +16,12 @@
     <br>
 
     <div class="row">
+      <ng-container *ngIf="currentBoard == 'None'">
+        <div class="col-12 none-activity">
+          ¡Vamos a estudiar!
+        </div>
+      </ng-container>
+
       <ng-container *ngIf="currentBoard == 'StudyBoard'">
         <div class="col-12">
           <app-study-board></app-study-board>
@@ -24,7 +30,7 @@
       
       <ng-container *ngIf="currentBoard == 'TestBoard'">
         <div class="col-12">
-          <app-test-board></app-test-board>
+          <app-test-board (onTestFinished)="handleTestFinished()"></app-test-board>
         </div>
       </ng-container>
     </div>
