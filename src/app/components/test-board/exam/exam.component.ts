@@ -1,14 +1,16 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { MAX_TIMES_TABLE_AVAILABLE } from '../../../constants/config';
 import { Question } from '../../../types/question.type';
 
+import { QuestionComponent } from '../question/question.component';
+
 @Component({
   selector: 'app-exam',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, QuestionComponent],
   templateUrl: './exam.component.html',
   styleUrl: './exam.component.scss'
 })
@@ -16,40 +18,56 @@ export class ExamComponent implements OnChanges{
   @Input() tables: number[] = [];
   questions:Question[] = [];
   currentQuestionIndex = 0;
-  givenAnswer = null;  
+  givenAnswer: number | null = null;  
   nextAvailable = false;
   displayResults = false;
+  
+  onQuitExam = output<void>();
+  onChangeTimesTables = output<void>();
 
   ngOnChanges(changes: SimpleChanges): void {
     const tables = changes['tables'];    
 
     if(tables && tables.currentValue) {
       this.nextAvailable =  true;
-      this.fillQuestions();
+      this.shuffleQuestionsArray();
     }
   }
 
-  showNextQuestion() {
-    this.evaluateAnswer();    
-    this.currentQuestionIndex++;
-    this.nextAvailable = this.currentQuestionIndex < this.questions.length - 1;
-    this.givenAnswer = null;
+  getQuestionResultText(question: Question): string {
+    return `${question.multiplicand}X${question.multiplier} = ${question.givenAnswer === null? 'Sin respuesta': question.givenAnswer }: ${question.result? 'Correcto': 'Incorrecto'}`;
   }
 
-  calculateResults() {
-    this.evaluateAnswer();
-    this.givenAnswer = null;
+  handleShowNextQuestion(givenAnswer:number | null) {
+    this.evaluateAnswer(givenAnswer);
+    this.currentQuestionIndex++;
+    this.nextAvailable = this.currentQuestionIndex < this.questions.length - 1;
+  }
+
+  handleCalculateResults(givenAnswer:number | null) {
+    this.evaluateAnswer(givenAnswer);
     this.nextAvailable = false;
     this.displayResults = true;
   }
 
-  getQuestionResultText(question: Question): string {
-    return `${question.multiplicand}X${question.multiplier} = ${question.givenAnswer}: ${question.result? 'Correcto': 'Incorrecto'}`;
+  quitExam() {
+    this.onQuitExam.emit();
   }
 
-  private fillQuestions() {
+  retryTest() {
+    this.shuffleQuestionsArray();
+    this.displayResults = false;
+    this.currentQuestionIndex = 0;
+    this.nextAvailable = true;
+  }
+
+  takeAnotherTest() {
+    this.onChangeTimesTables.emit();
+  }
+
+  private shuffleQuestionsArray() {
     this.questions = Array(this.tables.length * MAX_TIMES_TABLE_AVAILABLE);
-    const availableNumbers = Array.from(this.questions.keys());    
+    const availableNumbers = Array.from(this.questions.keys());
 
     for(let i = 0; i < this.tables.length; i++) {
       const multiplicand = this.tables[i];
@@ -76,10 +94,10 @@ export class ExamComponent implements OnChanges{
     return Math.floor(Math.random() * max);
   }
 
-  private evaluateAnswer() {
+  private evaluateAnswer(givenAnswer: number | null) {
     if(this.currentQuestionIndex < this.questions.length) {
-      this.questions[this.currentQuestionIndex].givenAnswer = this.givenAnswer;
-      this.questions[this.currentQuestionIndex].result = this.questions[this.currentQuestionIndex].rightAnswer == this.givenAnswer;
+      this.questions[this.currentQuestionIndex].givenAnswer = givenAnswer;
+      this.questions[this.currentQuestionIndex].result = this.questions[this.currentQuestionIndex].rightAnswer == givenAnswer;
     }
   }
 }

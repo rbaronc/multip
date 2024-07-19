@@ -20,25 +20,22 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12">
-            <br>
+        <div class="option col-12">
             <div class="form-check form-switch">                
                 <input class="btn-check" type="checkbox" id="study-all-check" autocomplete="off" [checked]="studyAll" (click)="studyAllClicked()">
                 <label class="btn btn-outline-danger" for="study-all-check">¡Estudiar Todas!</label>
             </div>
         </div>
-    </div>
-    <br>
-    <br>
-    <br>
-    <div class="row">
-        <div class="col-12">
+        <div class="option col-12">
             <button type="button" class="btn btn-success" [disabled]="!anyTableSelected" (click)="examHasBegun = true">Ir a la prueba</button>
         </div>
     </div>
 </div>
 
-<div class="container" [ngClass]="examHasBegun? 'show': 'hide'">
-    <app-exam [tables]="selectedTables"></app-exam>
-</div>
+<ng-container *ngIf="examHasBegun">
+    <div class="container">
+        <app-exam [tables]="selectedTables" (onQuitExam)="handleQuitExam()" (onChangeTimesTables)="handleChangeTimesTables()"></app-exam>
+    </div>
+</ng-container>
+
 

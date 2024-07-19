@@ -1,26 +1,33 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <div class="card" *ngIf="questions.length && !displayResults">
-                <div class="card-body">
-                  <h5 class="card-title">Responde la siguiente pregunta:</h5>
-                  <p class="card-text">{{questions.length? questions[currentQuestionIndex].text: ""}}</p>                  
-                  <input type="number" name="" id="" [(ngModel)]="givenAnswer">
-
-                  <br>
-                  <br>
-                  <a href="#" class="btn btn-success" (click)="showNextQuestion()" *ngIf="nextAvailable && !displayResults">Siguiente</a>
-                  <a href="#" class="btn btn-warning" (click)="calculateResults()" *ngIf="!nextAvailable && !displayResults">Ver Resultados</a>
-                </div>
-            </div>
+            <app-question 
+                *ngIf="questions.length && !displayResults"                
+                [totalQuestions]="questions.length"
+                [question]="questions[currentQuestionIndex]"
+                [nextAvailable]="nextAvailable"
+                [displayResults]="displayResults"
+                (onShowNextQuestion)="handleShowNextQuestion($event)"
+                (onCalculateResults)="handleCalculateResults($event)"
+            ></app-question>
 
             <div class="card" *ngIf="displayResults">
                 <div class="card-body">
                   <h5 class="card-title">¡Estos son tus resultados!:</h5>
                 
                   <p class="card-text" *ngFor="let question of questions">{{getQuestionResultText(question)}}</p>
-
-                  <a href="#" class="btn btn-success">Salir</a>
+                
+                  <div class="row">
+                    <div class="col-4">
+                        <a href="#" class="btn btn-success" (click)="retryTest()">Intentar de nuevo</a>
+                    </div>
+                    <div class="col-4">
+                        <a href="#" class="btn btn-primary" (click)="takeAnotherTest()">Seleccionar otras tablas</a>
+                    </div>
+                    <div class="col-4">
+                        <a href="#" class="btn btn-danger" (click)="quitExam()">Salir</a>
+                    </div>
+                  </div>
                 </div>
             </div>
 
